@@ -102,6 +102,7 @@
     setup() {
       const store = useStore();
 
+      store.dispatch('initLogin');
       const authModalShow = computed(() => store.state.authModalShow);
       const toggleAuthModal = () => store.commit('toggleAuthModal');
 
@@ -115,5 +116,3 @@
     },
   };
 </script>
-
-<style></style>

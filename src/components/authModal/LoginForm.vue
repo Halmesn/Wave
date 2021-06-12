@@ -73,10 +73,13 @@
 
 <script>
   import { ref } from 'vue';
+  import { useStore } from 'vuex';
 
   export default {
     name: 'LoginForm',
     setup() {
+      const store = useStore();
+
       const schema = {
         email: 'email||required',
         password: 'required|min:3|max:32',
@@ -87,12 +90,20 @@
       let alertVariant = ref('bg-blue-500');
       let alertMsg = ref('Please wait! We are logging you in.');
 
-      const login = (values) => {
+      const login = async (values) => {
         inSubmission.value = true;
         showAlert.value = true;
         alertVariant.value = 'bg-blue-500';
         alertMsg.value = 'Please wait! We are logging you in.';
 
+        try {
+          await store.dispatch('login', values);
+        } catch (error) {
+          inSubmission.value = false;
+          alertVariant.value = 'bg-red-500';
+          alertMsg.value = 'Invalid login details';
+          return;
+        }
         alertVariant.value = 'bg-green-500';
         alertMsg.value = 'Success! You are now logged in.';
       };

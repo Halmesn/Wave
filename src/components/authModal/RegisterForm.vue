@@ -182,10 +182,13 @@
 
 <script>
   import { ref } from 'vue';
+  import { useStore } from 'vuex';
 
   export default {
     name: 'RegisterForm',
     setup() {
+      const store = useStore();
+
       const schema = {
         name: 'required|min:3|max:32|alphaSpaces',
         email: 'email|min:3|max:32|required',
@@ -205,11 +208,21 @@
       let alertVariant = ref('bg-blue-500');
       let alertMsg = ref('Please wait! Your account is being created.');
 
-      const register = (values) => {
+      const register = async (values) => {
         inSubmission.value = true;
         showAlert.value = true;
         alertVariant.value = 'bg-blue-500';
         alertMsg.value = 'Please wait! Your account is being created.';
+
+        try {
+          await store.dispatch('register', values);
+        } catch (error) {
+          inSubmission.value = false;
+          alertVariant.value = 'bg-red-500';
+          alertMsg.value =
+            'An unexpected error occurred. Please try again later';
+          return;
+        }
 
         alertVariant.value = 'bg-green-500';
         alertMsg.value = 'Success! Your account has been created.';
