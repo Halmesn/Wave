@@ -91,22 +91,26 @@
 </template>
 
 <script>
-  import { mapMutations, mapState } from 'vuex';
+  import { useStore } from 'vuex';
+  import { computed, ref } from 'vue';
   import LoginForm from './LoginForm.vue';
   import RegisterForm from './RegisterForm.vue';
 
   export default {
     name: 'Auth',
     components: { LoginForm, RegisterForm },
-    computed: {
-      ...mapState(['authModalShow']),
-    },
-    methods: {
-      ...mapMutations(['toggleAuthModal']),
-    },
-    data() {
+    setup() {
+      const store = useStore();
+
+      const authModalShow = computed(() => store.state.authModalShow);
+      const toggleAuthModal = () => store.commit('toggleAuthModal');
+
+      const tab = ref('log');
+
       return {
-        tab: 'log',
+        tab,
+        toggleAuthModal,
+        authModalShow,
       };
     },
   };

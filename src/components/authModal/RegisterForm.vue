@@ -181,37 +181,48 @@
 </template>
 
 <script>
+  import { ref } from 'vue';
+
   export default {
     name: 'RegisterForm',
-    methods: {
-      register(values) {
-        this.showAlert = true;
-        this.inSubmission = true;
-        this.alertVariant = 'bg-blue-500';
-        this.alertMsg = 'Please wait! Your account is being created.';
+    setup() {
+      const schema = {
+        name: 'required|min:3|max:32|alphaSpaces',
+        email: 'email|min:3|max:32|required',
+        age: 'required|minValue:18|maxValue:120',
+        password: 'required|min:3|max:32',
+        confirmPassword: 'passwordMismatch:@password',
+        country: 'required',
+        tos: 'tos',
+      };
 
-        this.alertVariant = 'bg-green-500';
-        this.alertMsg = 'Success! Your account has been created.';
-      },
-    },
-    data() {
+      const formData = {
+        country: 'USA',
+      };
+
+      let inSubmission = ref(false);
+      let showAlert = ref(false);
+      let alertVariant = ref('bg-blue-500');
+      let alertMsg = ref('Please wait! Your account is being created.');
+
+      const register = (values) => {
+        inSubmission.value = true;
+        showAlert.value = true;
+        alertVariant.value = 'bg-blue-500';
+        alertMsg.value = 'Please wait! Your account is being created.';
+
+        alertVariant.value = 'bg-green-500';
+        alertMsg.value = 'Success! Your account has been created.';
+      };
+
       return {
-        schema: {
-          name: 'required|min:3|max:32|alphaSpaces',
-          email: 'email|min:3|max:32|required',
-          age: 'required|minValue:18|maxValue:120',
-          password: 'required|min:3|max:32',
-          confirmPassword: 'passwordMismatch:@password',
-          country: 'required',
-          tos: 'tos',
-        },
-        formData: {
-          country: 'USA',
-        },
-        inSubmission: false,
-        showAlert: false,
-        alertVariant: 'bg-blue-500',
-        alertMsg: 'Please wait! Your account is being created.',
+        inSubmission,
+        showAlert,
+        alertVariant,
+        alertMsg,
+        formData,
+        schema,
+        register,
       };
     },
   };

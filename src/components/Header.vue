@@ -23,13 +23,20 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
-export default {
-  name: "Header",
-  methods: {
-    ...mapMutations(["toggleAuthModal"]),
-  },
-};
+  import { useStore } from 'vuex';
+
+  export default {
+    name: 'Header',
+    setup() {
+      const store = useStore();
+
+      const toggleAuthModal = () => store.commit('toggleAuthModal');
+
+      return {
+        toggleAuthModal,
+      };
+    },
+  };
 </script>
 
 <style></style>

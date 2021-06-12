@@ -72,29 +72,38 @@
 </template>
 
 <script>
+  import { ref } from 'vue';
+
   export default {
     name: 'LoginForm',
-    methods: {
-      login(values) {
-        this.showAlert = true;
-        this.inSubmission = true;
-        this.alertVariant = 'bg-blue-500';
-        this.alertMsg = 'Please wait! We are logging you in.';
+    setup() {
+      const schema = {
+        email: 'email||required',
+        password: 'required|min:3|max:32',
+      };
 
-        this.alertVariant = 'bg-green-500';
-        this.alertMsg = 'Success! You are now logged in.';
-      },
-    },
-    data() {
+      let inSubmission = ref(false);
+      let showAlert = ref(false);
+      let alertVariant = ref('bg-blue-500');
+      let alertMsg = ref('Please wait! We are logging you in.');
+
+      const login = (values) => {
+        inSubmission.value = true;
+        showAlert.value = true;
+        alertVariant.value = 'bg-blue-500';
+        alertMsg.value = 'Please wait! We are logging you in.';
+
+        alertVariant.value = 'bg-green-500';
+        alertMsg.value = 'Success! You are now logged in.';
+      };
+
       return {
-        schema: {
-          email: 'email||required',
-          password: 'required|min:3|max:32',
-        },
-        inSubmission: false,
-        showAlert: false,
-        alertVariant: 'bg-blue-500',
-        alertMsg: 'Please wait! We are logging you in.',
+        inSubmission,
+        showAlert,
+        alertVariant,
+        alertMsg,
+        login,
+        schema,
       };
     },
   };
