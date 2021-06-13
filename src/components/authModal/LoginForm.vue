@@ -106,6 +106,8 @@
         }
         alertVariant.value = 'bg-green-500';
         alertMsg.value = 'Success! You are now logged in.';
+
+        window.location.reload();
       };
 
       return {

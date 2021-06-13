@@ -226,6 +226,8 @@
 
         alertVariant.value = 'bg-green-500';
         alertMsg.value = 'Success! Your account has been created.';
+
+        window.location.reload();
       };
 
       return {

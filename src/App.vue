@@ -1,9 +1,7 @@
 <template>
   <Header />
 
-  <Introduction />
-
-  <Content />
+  <router-view></router-view>
 
   <Player />
 
@@ -12,8 +10,6 @@
 
 <script>
   import Header from './components/Header.vue';
-  import Introduction from './components/Introduction.vue';
-  import Content from './components/Content.vue';
   import Player from './components/Player.vue';
   import Auth from './components/authModal/Auth.vue';
 
@@ -21,8 +17,6 @@
     name: 'App',
     components: {
       Header,
-      Introduction,
-      Content,
       Player,
       Auth,
     },
