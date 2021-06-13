@@ -81,14 +81,14 @@
       const store = useStore();
 
       const schema = {
-        email: 'email||required',
+        email: 'email|required',
         password: 'required|min:3|max:32',
       };
 
-      let inSubmission = ref(false);
-      let showAlert = ref(false);
-      let alertVariant = ref('bg-blue-500');
-      let alertMsg = ref('Please wait! We are logging you in.');
+      const inSubmission = ref(false);
+      const showAlert = ref(false);
+      const alertVariant = ref('bg-blue-500');
+      const alertMsg = ref('Please wait! We are logging you in.');
 
       const login = async (values) => {
         inSubmission.value = true;

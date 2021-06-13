@@ -33,6 +33,7 @@
       >
         <h5>Drop your files here</h5>
       </div>
+      <input type="file" multiple @change="upload($event)" />
       <hr class="my-6" />
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
@@ -54,18 +55,23 @@
 </template>
 
 <script>
-  import { ref } from 'vue';
+  import { ref, onBeforeUnmount, toRefs } from 'vue';
   import { storage, auth, songsCollection } from '@/global/firebase';
 
   export default {
     name: 'Upload',
-    setup() {
+    props: { addSong: { type: Function, required: true } },
+
+    setup(props) {
       const isDragOver = ref(false);
       const uploads = ref([]);
+      const { addSong } = toRefs(props);
 
       const upload = ($event) => {
         isDragOver.value = false;
-        const files = [...$event.dataTransfer.files];
+        const files = $event.dataTransfer
+          ? [...$event.dataTransfer.files]
+          : [...$event.target.files];
 
         files.forEach((file) => {
           if (file.type !== 'audio/mpeg') return;
@@ -101,13 +107,16 @@
             };
 
             song.url = await task.snapshot.ref.getDownloadURL();
-            await songsCollection.add(song);
+            const songRef = await songsCollection.add(song);
+            const songSnapshot = await songRef.get();
+
+            addSong.value(songSnapshot);
 
             uploads.value[uploadIndex].variant = 'bg-green-400';
             uploads.value[uploadIndex].icon = 'fas fa-check';
             uploads.value[uploadIndex].textColor = 'text-green-400';
           };
-          const onTaskFail = (error) => {
+          const onTaskFail = () => {
             uploads.value[uploadIndex].variant = 'bg-red-400';
             uploads.value[uploadIndex].icon = 'fas fa-times';
             uploads.value[uploadIndex].textColor = 'text-red-400';
@@ -116,6 +125,8 @@
           task.on('state_changed', onTaskChange, onTaskFail, onTaskSuccess);
         });
       };
+
+      onBeforeUnmount(() => uploads.value.forEach(({ task }) => task.cancel()));
 
       return {
         isDragOver,
