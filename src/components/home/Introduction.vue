@@ -6,12 +6,13 @@
     ></div>
     <div class="container mx-auto">
       <div class="text-white main-header-content">
-        <h1 class="font-bold text-5xl mb-5">Listen to Great Music!</h1>
+        <h1 class="font-bold text-5xl mb-5">
+          Wave: Music for everyone!
+        </h1>
         <p class="w-full md:w-8/12 mx-auto">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus et
-          dolor mollis, congue augue non, venenatis elit. Nunc justo eros,
-          suscipit ac aliquet imperdiet, venenatis et sapien. Duis sed magna
-          pulvinar, fringilla lorem eget, ullamcorper urna.
+          Wave is a music sharing platform where you can upload and share your
+          favorite music, discover what other people are listing, and leave
+          comments to be involved in the Wave community! .
         </p>
       </div>
     </div>
@@ -24,9 +25,9 @@
 </template>
 
 <script>
-export default {
-  name: "Introduction",
-};
+  export default {
+    name: 'Introduction',
+  };
 </script>
 
 <style></style>
