@@ -340,9 +340,9 @@
 </template>
 
 <script>
-export default {
-  name: "Content",
-};
+  export default {
+    name: 'SongCollection',
+  };
 </script>
 
 <style></style>

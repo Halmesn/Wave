@@ -1,15 +1,12 @@
 <template>
-  <Introduction />
-
-  <Content />
+  <HomeContent />
 </template>
 
 <script>
-  import Introduction from '@/components/Introduction.vue';
-  import Content from '@/components/Content.vue';
+  import HomeContent from '@/components/home/HomeContent.vue';
 
   export default {
-    name: 'Home',
-    components: { Introduction, Content },
+    name: 'HomePage',
+    components: { HomeContent },
   };
 </script>

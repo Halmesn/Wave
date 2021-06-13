@@ -97,7 +97,7 @@
   import RegisterForm from './RegisterForm.vue';
 
   export default {
-    name: 'Auth',
+    name: 'AuthModal',
     components: { LoginForm, RegisterForm },
     setup() {
       const store = useStore();
