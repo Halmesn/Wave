@@ -8,59 +8,86 @@
       <!-- Upload Dropbox -->
       <div
         class="
-                w-full
-                px-10
-                py-20
-                rounded
-                text-center
-                cursor-pointer
-                border border-dashed border-gray-400
-                text-gray-400
-                transition
-                duration-500
-                hover:text-white
-                hover:bg-green-400
-                hover:border-green-400 hover:border-solid
-              "
+          w-full
+          px-10
+          py-20
+          rounded
+          text-center
+          cursor-pointer
+          border border-dashed border-gray-400
+          text-gray-400
+          transition
+          duration-500
+          hover:text-white
+          hover:bg-green-400
+          hover:border-green-400 hover:border-solid
+        "
+        :class="{ 'bg-green-400 border-green-400 border-solid': isDragOver }"
+        @drag.prevent.stop=""
+        @dragstart.prevent.stop=""
+        @dragend.prevent.stop="isDragOver = false"
+        @dragover.prevent.stop="isDragOver = true"
+        @dragenter.prevent.stop="isDragOver = true"
+        @dragleave.prevent.stop="isDragOver = false"
+        @drop.prevent.stop="upload($event)"
       >
         <h5>Drop your files here</h5>
       </div>
       <hr class="my-6" />
       <!-- Progess Bars -->
-      <div class="mb-4">
+      <div class="mb-4" v-for="upload in uploads" :key="upload.name">
         <!-- File Name -->
-        <div class="font-bold text-sm">Just another song.mp3</div>
+        <div class="font-bold text-sm">{{ upload.name }}</div>
         <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
           <!-- Inner Progress Bar -->
           <div
             class="transition-all progress-bar bg-blue-400"
-            style="width: 75%"
+            :style="{ width: upload.currentProgress + '%' }"
           ></div>
         </div>
       </div>
-      <div class="mb-4">
-        <div class="font-bold text-sm">Just another song.mp3</div>
-        <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-          <div
-            class="transition-all progress-bar bg-blue-400"
-            style="width: 35%"
-          ></div>
-        </div>
-      </div>
-      <div class="mb-4">
-        <div class="font-bold text-sm">Just another song.mp3</div>
-        <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-          <div
-            class="transition-all progress-bar bg-blue-400"
-            style="width: 55%"
-          ></div>
-        </div>
-      </div>
-    </div></div
-></template>
+    </div>
+  </div>
+</template>
 
 <script>
+  import { ref } from 'vue';
+  import { storage } from '@/global/firebase';
+
   export default {
     name: 'Upload',
+    setup() {
+      const isDragOver = ref(false);
+      const uploads = ref([]);
+
+      const upload = ($event) => {
+        isDragOver.value = false;
+        const files = [...$event.dataTransfer.files];
+
+        files.forEach((file) => {
+          if (file.type !== 'audio/mpeg') return;
+
+          const storageRef = storage.ref(); // vue-wave-ea020.appspot.com
+          const songsRef = storageRef.child(`songs/${file.name}`); // vue-wave-ea020.appspot.com/songs/file.name
+          const task = songsRef.put(file);
+
+          const uploadIndex =
+            uploads.value.push({ task, currentProgress: 0, name: file.name }) -
+            1;
+
+          task.on('state_changed', ({ bytesTransferred, totalBytes }) => {
+            const progress = (bytesTransferred / totalBytes) * 100;
+
+            uploads.value[uploadIndex].currentProgress = progress;
+          });
+        });
+      };
+
+      return {
+        isDragOver,
+        upload,
+        uploads,
+      };
+    },
   };
 </script>
