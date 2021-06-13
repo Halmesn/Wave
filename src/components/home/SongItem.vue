@@ -13,11 +13,13 @@
           "
   >
     <div>
-      <a href="#" class="font-bold block text-gray-600">{{
-        song.modifiedName
-      }}</a>
+      <router-link
+        :to="{ name: 'song', params: { id: song.docId } }"
+        class="font-bold block text-gray-600"
+        >{{ song.modifiedName }}</router-link
+      >
       <span class="text-gray-500 text-sm"
-        >Upload by {{ song.displayName }}</span
+        >Uploaded by {{ song.displayName }}</span
       >
     </div>
 
