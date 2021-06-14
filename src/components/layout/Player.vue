@@ -16,15 +16,21 @@
     <div class="relative">
       <!-- Play/Pause Button -->
       <div class="float-left w-7 h-7 leading-3">
-        <button type="button">
-          <i class="fa fa-play text-gray-500 text-xl"></i>
+        <button type="button" @click="togglePlay">
+          <i
+            class="fa text-gray-500 text-xl"
+            :class="{
+              'fa-play': !isPlaying,
+              'fa-pause': isPlaying,
+            }"
+          ></i>
         </button>
       </div>
       <!-- Current Position -->
       <div
         class="float-left h-7 leading-3 text-gray-400 text-lg w-14 ml-5 mt-1"
       >
-        <span class="player-currenttime">00:00</span>
+        <span class="player-currenttime">{{ seek }}</span>
       </div>
       <!-- Scrub -->
       <div class="float-left w-7 h-7 leading-3 ml-7 mt-2 player-scrub">
@@ -37,9 +43,12 @@
             mx-auto
             player-song-info
           "
+          v-show="currentSong.modifiedName"
         >
-          <span class="song-title">Song Title</span> by
-          <span class="song-artist">Artist</span>
+          <span class="song-title">{{ currentSong.modifiedName }}</span>
+          <span class="song-artist">
+            (uploaded by {{ currentSong.displayName }})</span
+          >
         </div>
         <!-- Scrub Container  -->
         <span
@@ -54,11 +63,12 @@
             relative
             cursor-pointer
           "
+          @click="updateSeek"
         >
           <!-- Player Ball -->
           <span
             class="absolute top-neg-8 text-gray-800 text-lg"
-            style="left: 50%"
+            :style="{ left: playerProgress }"
           >
             <i class="fas fa-circle"></i>
           </span>
@@ -72,7 +82,7 @@
               from-green-500
               to-green-400
             "
-            style="width: 50%"
+            :style="{ width: playerProgress }"
           ></span>
         </span>
       </div>
@@ -80,14 +90,41 @@
       <div
         class="float-left h-7 leading-3 text-gray-400 text-lg w-14 ml-8 mt-1"
       >
-        <span class="player-duration">03:06</span>
+        <span class="player-duration">{{ duration }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default { name: 'Player' };
+  import { useStore } from 'vuex';
+  import { computed } from 'vue';
+
+  export default {
+    name: 'Player',
+    setup() {
+      const store = useStore();
+
+      const isPlaying = computed(() => store.getters.isPlaying);
+      const seek = computed(() => store.state.seek);
+      const duration = computed(() => store.state.duration);
+      const playerProgress = computed(() => store.state.playerProgress);
+      const currentSong = computed(() => store.state.currentSong);
+
+      const togglePlay = () => store.dispatch('togglePlay');
+      const updateSeek = () => {};
+
+      return {
+        isPlaying,
+        togglePlay,
+        seek,
+        duration,
+        playerProgress,
+        currentSong,
+        updateSeek,
+      };
+    },
+  };
 </script>
 
 <style></style>

@@ -11,6 +11,7 @@
         type="button"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full
         focus:outline-none"
+        @click="playSong(song)"
       >
         <i class="fas fa-play"></i>
       </button>
@@ -196,6 +197,8 @@
         resetForm();
       };
 
+      const playSong = (song) => store.dispatch('playSong', song);
+
       return {
         song,
         submitComment,
@@ -208,6 +211,7 @@
         comments,
         sortedComments,
         sort,
+        playSong,
       };
     },
   };
