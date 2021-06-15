@@ -106,10 +106,10 @@
       const store = useStore();
 
       const isPlaying = computed(() => store.getters.isPlaying);
-      const seek = computed(() => store.state.seek);
-      const duration = computed(() => store.state.duration);
-      const playerProgress = computed(() => store.state.playerProgress);
-      const currentSong = computed(() => store.state.currentSong);
+      const seek = computed(() => store.state.player.seek);
+      const duration = computed(() => store.state.player.duration);
+      const playerProgress = computed(() => store.state.player.playerProgress);
+      const currentSong = computed(() => store.state.player.currentSong);
 
       const togglePlay = () => store.dispatch('togglePlay');
       const updateSeek = (event) => store.dispatch('updateSeek', event);

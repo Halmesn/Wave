@@ -50,7 +50,7 @@
     setup() {
       const store = useStore();
 
-      const userLoggedIn = computed(() => store.state.userLoggedIn);
+      const userLoggedIn = computed(() => store.state.auth.userLoggedIn);
       const toggleAuthModal = () => store.commit('toggleAuthModal');
 
       const router = useRouter();

@@ -103,7 +103,7 @@
       const store = useStore();
 
       store.dispatch('initLogin');
-      const authModalShow = computed(() => store.state.authModalShow);
+      const authModalShow = computed(() => store.state.auth.authModalShow);
       const toggleAuthModal = () => store.commit('toggleAuthModal');
 
       const tab = ref('log');
