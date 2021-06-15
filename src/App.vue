@@ -1,7 +1,8 @@
 <template>
   <Header />
-
-  <router-view></router-view>
+  <main>
+    <router-view> </router-view>
+  </main>
 
   <Player />
 

@@ -112,7 +112,7 @@
       const currentSong = computed(() => store.state.currentSong);
 
       const togglePlay = () => store.dispatch('togglePlay');
-      const updateSeek = () => {};
+      const updateSeek = (event) => store.dispatch('updateSeek', event);
 
       return {
         isPlaying,
